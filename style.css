@@ -3,28 +3,20 @@
 body { 
     background: #000; overflow: hidden; 
     font-family: 'Quicksand', sans-serif; height: 100vh; color: white; 
-    user-select: none;
-    -webkit-tap-highlight-color: transparent; /* Bỏ màu highlight khi chạm trên mobile */
+    user-select: none; -webkit-tap-highlight-color: transparent;
 }
 
-/* --- CẢNH BÁO XOAY MÀN HÌNH (MỚI) --- */
+/* CẢNH BÁO XOAY NGANG (Giữ nguyên hoặc xóa nếu bạn muốn) */
 #rotate-warning {
-    display: none; /* Mặc định ẩn */
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: #000; z-index: 9999;
-    flex-direction: column; justify-content: center; align-items: center;
-    text-align: center; color: white;
+    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: #1a1a1a; z-index: 9999; flex-direction: column; justify-content: center; align-items: center; color: white;
 }
-.phone-icon { font-size: 50px; animation: rotatePhone 2s infinite; margin-bottom: 20px; }
-@keyframes rotatePhone { 0%, 100% {transform: rotate(-90deg);} 50% {transform: rotate(0deg);} }
-
-/* Media Query: Chỉ hiện khi màn hình ngang trên điện thoại */
-@media screen and (max-height: 500px) and (orientation: landscape) {
+@media only screen and (orientation: portrait) {
     #rotate-warning { display: flex; }
-    .layer { display: none !important; } /* Ẩn nội dung chính */
+    .layer { display: none !important; }
 }
 
-/* --- CÁC LAYER CŨ (GIỮ NGUYÊN) --- */
+/* --- CÁC LAYER --- */
 .layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; transition: opacity 0.8s; opacity: 0; pointer-events: none; z-index: 0; }
 .active-layer { opacity: 1; pointer-events: all; z-index: 10; }
 .hidden { display: none !important; }
@@ -34,25 +26,18 @@ body {
 #btn-ready, #btn-next { padding: 10px 30px; margin-top: 20px; border-radius: 30px; border: none; cursor: pointer; font-weight: bold; font-size: 1.1rem; }
 #layer-video { background: black; } video { width: 100%; height: 100%; object-fit: cover; }
 .text-overlay { position: absolute; inset: 0; display: flex; justify-content: center; align-items: center; mix-blend-mode: screen; font-size: 3rem; font-weight: bold; text-shadow: 0 0 20px cyan; }
-#layer-gift { 
-    background: #1a2a6c; /* Thay ảnh nền của bạn vào đây */
-    display: flex; justify-content: center; align-items: center; 
-}
+#layer-gift { background: url('assets/bg-night.jpg'); background-size: cover; background-position: center; display: flex; flex-direction: column; justify-content: center; align-items: center; }
 #gift-box { font-size: 100px; cursor: pointer; animation: shake 2s infinite; }
 #letter-wrapper { position: absolute; inset: 0; background: rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center; }
 .paper { background: #fffaf0; color: #333; padding: 30px; border-radius: 10px; max-width: 400px; text-align: center; font-family: 'Dancing Script', cursive; font-size: 1.5rem; }
 
-/* --- LAYER 4: 3D WORLD --- */
+/* --- LAYER 3D --- */
 #layer-3d {
     background: radial-gradient(circle at center, #1a2a6c, #000000);
-    overflow: hidden;
-    /* QUAN TRỌNG: Chặn trình duyệt xử lý chạm, giúp JS nhận toàn bộ thao tác kéo */
-    touch-action: none; 
+    overflow: hidden; touch-action: none;
 }
-
-#scene { width: 100%; height: 100%; position: relative; touch-action: none; }
-
-#tree-canvas { position: absolute; top: 0; left: 0; z-index: 1; }
+#scene { width: 100%; height: 100%; position: relative; }
+#tree-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
 #dom-objects { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
 
 .photo-item {
@@ -61,8 +46,29 @@ body {
     border: 2px solid white; box-shadow: 0 0 10px rgba(0, 170, 255, 0.8);
     border-radius: 8px; will-change: transform;
     cursor: pointer; pointer-events: auto;
+    transition: box-shadow 0.3s, border-color 0.3s; /* Mượt mà khi hover */
 }
-.photo-item:hover, .photo-item:active { border-color: yellow; box-shadow: 0 0 20px yellow; z-index: 1000 !important; }
-.snow-item { position: absolute; color: white; font-size: 20px; text-shadow: 0 0 5px white; will-change: transform; pointer-events: none; }
+
+/* --- TRẠNG THÁI ẢNH ĐƯỢC PHÓNG TO (FOCUS MODE) --- */
+.photo-item.focused {
+    position: fixed; /* Tách khỏi dòng chảy 3D */
+    z-index: 9999 !important; /* Luôn nổi lên trên cùng */
+    box-shadow: 0 0 50px rgba(255, 215, 0, 0.8); /* Phát sáng vàng mạnh */
+    border: 3px solid gold;
+    /* Kích thước lớn hơn */
+    width: 200px !important; 
+    height: 260px !important;
+    /* Transition cho hiệu ứng phóng to mượt */
+    transition: width 0.3s, height 0.3s, box-shadow 0.3s, border 0.3s;
+}
+
+/* Màn nền mờ khi xem ảnh */
+#overlay-dim {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.7); z-index: 9000;
+    display: none; pointer-events: none;
+}
+#overlay-dim.active { display: block; pointer-events: auto; }
+
 .guide-text { position: absolute; bottom: 20px; width: 100%; text-align: center; color: rgba(255,255,255,0.4); font-size: 0.9rem; pointer-events: none; z-index: 20; }
 @keyframes shake { 0%, 100% {transform: rotate(0);} 25% {transform: rotate(5deg);} 75% {transform: rotate(-5deg);} }
