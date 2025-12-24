@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Christmas True 3D</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <audio id="bg-music" loop><source src="assets/music.mp3" type="audio/mpeg"></audio>
+
+    <section id="layer-start" class="layer active-layer">
+        <div class="glass-box">
+            <h1>🎅 Món quà Giáng Sinh</h1>
+            <button id="btn-ready">Mở quà ngay</button>
+        </div>
+    </section>
+
+    <section id="layer-video" class="layer hidden">
+        <div class="video-wrapper">
+            <video id="intro-video" playsinline muted><source src="assets/1.mp4" type="video/mp4"></video>
+            <div class="text-overlay"><h2>MERRY CHRISTMAS</h2></div>
+        </div>
+    </section>
+
+    <section id="layer-gift" class="layer hidden">
+        <div id="gift-wrapper"><div id="gift-box">🎁</div><p>Chạm nhẹ...</p></div>
+        <div id="letter-wrapper" class="hidden">
+            <div class="paper">
+                <p id="letter-content">Hé Loooo, trời lạnh quá lạnh hên mà ngã vào em nên ấm quá chời ấm rồiii. 
+                    Năm nay hong cùng em đi chơi Giáng Sinh được rùi buồn ghê, anh vẽ ra một thế giới tuyết này tặng em để có thể cùng ngắm với em,
+                    Mong là năm sau anh được cùng em đan tay nhau đi chơi khắp nơi chứ không phải ngắm nhìn em qua màn hình điện thoại này
+                    , anh iu em siu siu nhiều luôn í hố hố.
+                    <br>Merry Christmas 🎄❄️</p>
+                <button id="btn-next" class="hidden">Vào thế giới tuyết ➔</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="layer-3d" class="layer hidden">
+        <div id="scene">
+            <canvas id="tree-canvas"></canvas>
+            
+            <div id="dom-objects"></div>
+        </div>
+        <div class="guide-text">🖱️ Kéo ngang để xoay - Ảnh luôn hướng về bạn</div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+/* --- CẤU HÌNH CHUNG --- */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { 
+    background: #000; overflow: hidden; 
+    font-family: 'Quicksand', sans-serif; height: 100vh; color: white; user-select: none;
+}
+.layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; transition: opacity 0.8s; opacity: 0; pointer-events: none; z-index: 0; }
+.active-layer { opacity: 1; pointer-events: all; z-index: 10; }
+.hidden { display: none !important; }
+
+/* LAYER 1, 2, 3 (Giữ nguyên như cũ) */
+#layer-start { background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); display: flex; justify-content: center; align-items: center; }
+.glass-box { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); padding: 40px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2); text-align: center; }
+#btn-ready, #btn-next { padding: 10px 30px; margin-top: 20px; border-radius: 30px; border: none; cursor: pointer; font-weight: bold; font-size: 1.1rem; }
+#layer-video { background: black; } video { width: 100%; height: 100%; object-fit: cover; }
+.text-overlay { position: absolute; inset: 0; display: flex; justify-content: center; align-items: center; mix-blend-mode: screen; font-size: 3rem; font-weight: bold; text-shadow: 0 0 20px cyan; }
+#layer-gift { 
+    /* Thay ảnh nền layer 3 của bạn tại đây */
+    background: url('assets/bg-night.jpg') no-repeat center center/cover; 
+    display: flex; justify-content: center; align-items: center; 
+}
+#gift-box { font-size: 100px; cursor: pointer; animation: shake 2s infinite; }
+#letter-wrapper { position: absolute; inset: 0; background: rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center; }
+.paper { background: #fffaf0; color: #333; padding: 30px; border-radius: 10px; max-width: 400px; text-align: center; font-family: 'Dancing Script', cursive; font-size: 1.5rem; }
+
+/* --- LAYER 4: 3D WORLD --- */
+#layer-3d {
+    background: radial-gradient(circle at center, #1a2a6c, #000000);
+    overflow: hidden;
+}
+
+#scene {
+    width: 100%; height: 100%;
+    position: relative;
+    /* Không dùng perspective CSS nữa, JS sẽ lo việc này */
+}
+
+#tree-canvas {
+    position: absolute; top: 0; left: 0; z-index: 1; /* Cây nằm dưới cùng, nhưng JS sẽ chỉnh z-index từng hạt */
+}
+
+/* Container chứa ảnh và tuyết */
+#dom-objects {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; /* Để chuột xuyên qua bắt sự kiện kéo */
+}
+
+/* Style cho Ảnh */
+.photo-item {
+    position: absolute;
+    width: 100px; height: 120px;
+    background-size: cover; background-position: center;
+    border: 2px solid white;
+    box-shadow: 0 0 10px rgba(0, 170, 255, 0.8);
+    border-radius: 8px;
+    
+    /* --- THÊM DÒNG NÀY ĐỂ GIẢM LAG --- */
+    will-change: transform, opacity; 
+    /* ---------------------------------- */
+
+    cursor: pointer;
+    pointer-events: auto;
+}
+.photo-item:hover {
+    border-color: yellow;
+    box-shadow: 0 0 20px yellow;
+    z-index: 1000 !important; /* Luôn nổi lên trên khi hover */
+}
+
+/* Style cho Tuyết */
+.snow-item {
+    position: absolute;
+    color: white;
+    font-size: 20px;
+    text-shadow: 0 0 5px white;
+    will-change: transform;
+    pointer-events: none;
+}
+
+.guide-text {
+    position: absolute; bottom: 20px; width: 100%; text-align: center; 
+    color: rgba(255,255,255,0.4); font-size: 0.9rem; pointer-events: none; z-index: 20;
+}
+
+@keyframes shake { 0%, 100% {transform: rotate(0);} 25% {transform: rotate(5deg);} 75% {transform: rotate(-5deg);} }
