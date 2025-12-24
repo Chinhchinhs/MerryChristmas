@@ -6,11 +6,13 @@ body {
     user-select: none; -webkit-tap-highlight-color: transparent;
 }
 
-/* CẢNH BÁO XOAY NGANG (Giữ nguyên hoặc xóa nếu bạn muốn) */
+/* --- CẢNH BÁO XOAY NGANG --- */
 #rotate-warning {
     display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background: #1a1a1a; z-index: 9999; flex-direction: column; justify-content: center; align-items: center; color: white;
 }
+.phone-anim { font-size: 60px; animation: rotateDevice 2s infinite ease-in-out; margin-bottom: 20px; }
+@keyframes rotateDevice { 0%, 100% {transform: rotate(0deg);} 50% {transform: rotate(-90deg);} }
 @media only screen and (orientation: portrait) {
     #rotate-warning { display: flex; }
     .layer { display: none !important; }
@@ -26,10 +28,10 @@ body {
 #btn-ready, #btn-next { padding: 10px 30px; margin-top: 20px; border-radius: 30px; border: none; cursor: pointer; font-weight: bold; font-size: 1.1rem; }
 #layer-video { background: black; } video { width: 100%; height: 100%; object-fit: cover; }
 .text-overlay { position: absolute; inset: 0; display: flex; justify-content: center; align-items: center; mix-blend-mode: screen; font-size: 3rem; font-weight: bold; text-shadow: 0 0 20px cyan; }
-#layer-gift { background: url('assets/bg-night.jpg'); background-size: cover; background-position: center; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+#layer-gift { background-image: url('assets/bg-night.jpg'); background-size: cover; background-position: center; display: flex; justify-content: center; align-items: center; flex-direction: column; }
 #gift-box { font-size: 100px; cursor: pointer; animation: shake 2s infinite; }
-#letter-wrapper { position: absolute; inset: 0; background: rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center; }
-.paper { background: #fffaf0; color: #333; padding: 30px; border-radius: 10px; max-width: 400px; text-align: center; font-family: 'Dancing Script', cursive; font-size: 1.5rem; }
+#letter-wrapper { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.459); display: flex; justify-content: center; align-items: center; }
+.paper { background: #fffaf0; color: #333; padding: 30px; border-radius: 10px; max-width: 400px; text-align: center; font-family: 'Dancing Script', cursive; font-size: 1rem; }
 
 /* --- LAYER 3D --- */
 #layer-3d {
@@ -44,22 +46,23 @@ body {
     position: absolute; width: 100px; height: 120px;
     background-size: cover; background-position: center;
     border: 2px solid white; box-shadow: 0 0 10px rgba(0, 170, 255, 0.8);
-    border-radius: 8px; will-change: transform;
+    border-radius: 8px; will-change: transform, opacity; /* Thêm opacity vào transition */
     cursor: pointer; pointer-events: auto;
-    transition: box-shadow 0.3s, border-color 0.3s; /* Mượt mà khi hover */
+    transition: all 0.3s ease-out; /* Mượt mà hóa mọi thay đổi */
 }
 
 /* --- TRẠNG THÁI ẢNH ĐƯỢC PHÓNG TO (FOCUS MODE) --- */
 .photo-item.focused {
-    position: fixed; /* Tách khỏi dòng chảy 3D */
-    z-index: 9999 !important; /* Luôn nổi lên trên cùng */
-    box-shadow: 0 0 50px rgba(255, 215, 0, 0.8); /* Phát sáng vàng mạnh */
+    position: fixed;
+    z-index: 9999 !important;
+    box-shadow: 0 0 50px rgba(255, 215, 0, 0.8);
     border: 3px solid gold;
-    /* Kích thước lớn hơn */
-    width: 200px !important; 
-    height: 260px !important;
-    /* Transition cho hiệu ứng phóng to mượt */
-    transition: width 0.3s, height 0.3s, box-shadow 0.3s, border 0.3s;
+    width: 240px !important; /* Ảnh to hơn xíu khi xem */
+    height: 320px !important;
+    
+    /* --- QUAN TRỌNG NHẤT: Bắt buộc ảnh rõ nét --- */
+    opacity: 1 !important; 
+    /* ------------------------------------------- */
 }
 
 /* Màn nền mờ khi xem ảnh */
@@ -67,6 +70,7 @@ body {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background: rgba(0,0,0,0.7); z-index: 9000;
     display: none; pointer-events: none;
+    backdrop-filter: blur(5px); /* Làm mờ nền 3D đi một chút để tập trung vào ảnh */
 }
 #overlay-dim.active { display: block; pointer-events: auto; }
 
