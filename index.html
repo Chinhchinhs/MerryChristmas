@@ -2,13 +2,18 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Christmas True 3D</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <audio id="bg-music" loop><source src="assets/music.mp3" type="audio/mpeg"></audio>
+
+    <div id="rotate-warning">
+        <div class="phone-icon">📱</div>
+        <p>Vui lòng xoay dọc điện thoại<br>để có trải nghiệm tốt nhất!</p>
+    </div>
 
     <section id="layer-start" class="layer active-layer">
         <div class="glass-box">
@@ -41,10 +46,9 @@
     <section id="layer-3d" class="layer hidden">
         <div id="scene">
             <canvas id="tree-canvas"></canvas>
-            
             <div id="dom-objects"></div>
         </div>
-        <div class="guide-text">🖱️ Kéo ngang để xoay - Ảnh luôn hướng về bạn</div>
+        <div class="guide-text">🖱️ Kéo ngang để xoay</div>
     </section>
 
     <script src="script.js"></script>
